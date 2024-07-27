@@ -1,0 +1,21 @@
+log_debug: false
+hack_me_please: true
+
+server:
+  http:
+    listen_addr: "0.0.0.0:9001"
+
+users:
+  - name: "default"
+    password: "password"
+    to_cluster: "default"
+    to_user: "admin"
+    max_concurrent_queries: 1000
+    max_execution_time: 10m
+
+clusters:
+  - name: "default"
+    nodes: ["172.16.10.153:8123", "172.16.10.154:8123", "172.16.10.155:8123"]
+    users:
+      - name: "ssai_user"
+        password: "123"

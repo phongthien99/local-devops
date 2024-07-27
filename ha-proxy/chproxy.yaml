@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+   haproxy:
+        image: haproxy:3.0.2
+        ports:
+            - "8123:8123"
+        volumes:
+            - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg

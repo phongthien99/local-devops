@@ -1,0 +1,99 @@
+version: '3.4'
+
+services:
+
+  nginx:
+    image: docker.io/bitnami/nginx:1.23
+    container_name: gateway
+    # ports/data/test/nginx/nginx.conf
+    #   - '8092:5000'
+    labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.sigma-cluster-gateway.rule=Host(`sigma-cluster.gateway.develop`)"
+        - "traefik.http.routers.sigma-cluster-gateway.service=prod-livestream-01-portal"
+        - "traefik.http.services.sigma-cluster-gateway.loadbalancer.server.port=80"
+    volumes:
+      - ./nginx.conf:/opt/bitnami/nginx/conf/server_blocks/my_server_block.conf
+
+    networks:
+      - fpt
+      # - traefik-ingress
+  ossrs:
+    image: ossrs/srs:5 
+    container_name: srs.svc
+    command: ./objs/srs -c conf/srs.conf
+    networks:
+      - fpt
+    volumes:
+      - ./srs.conf:/usr/local/srs/conf/srs.conf
+    ports:
+      - 8084:1935 
+  transcoder-16-01:
+    container_name: only-dev-transcoder-01
+    image: registry.gviet.vn:5000/sigma-livestream/sigma-media-server:3.0.12
+    command: >
+     /bin/bash -c '
+      env ;
+      if [ -f "/etc/sigma-machine/config/nats.yaml" ]; then
+          ./sigma-video -config "mode=live,port=9999,debug=1,yaml=/etc/sigma-machine/config/config.yaml"
+      else
+          ./sigma-video -config "mode=live,port=9999,debug=1,yaml=/etc/sigma-machine/config/config.yaml"&sleep 4;
+          /etc/sigma-machine/script/register.sh --server-name=only-dev-transcoder-01 --enable-origin=true --enable-ingest=true --server-token=m-SyPaQDxgMRQqYpfO2V7 --server-data-dir=/data/transcode  --api-endpoint=https://dev-streaming.gviet.vn:8783
+      fi'
+    volumes:
+      - config_cluster_1:/etc/sigma-machine/config
+      - /data/data-test:/data/data-test
+    # ports:
+    #   - 8091:8080
+    networks:
+      - fpt
+
+  transcoder-16-02:
+    container_name:  only-dev-transcoder-02
+    image: registry.gviet.vn:5000/sigma-livestream/sigma-media-server:3.0.12
+    command: >
+     /bin/bash -c '
+      env ;
+      if [ -f "/etc/sigma-machine/config/nats.yaml" ]; then
+          ./sigma-video -config "mode=live,port=9999,debug=1,yaml=/etc/sigma-machine/config/config.yaml"
+      else
+          ./sigma-video -config "mode=live,port=9999,debug=1,yaml=/etc/sigma-machine/config/config.yaml"&sleep 4;
+          /etc/sigma-machine/script/register.sh --server-name=only-dev-transcoder-02 --enable-origin=true --enable-ingest=true --server-token=m-SyPaQDxgMRQqYpfO2V7 --server-data-dir=/data/transcode  --api-endpoint=https://dev-streaming.gviet.vn:8783
+      fi'
+    volumes:
+      - config_cluster_2:/etc/sigma-machine/config
+      - /data/data-test:/data/data-test
+    networks:
+      - fpt
+  transcoder-16-03:
+    container_name: only-dev-transcoder-03
+    image: registry.gviet.vn:5000/sigma-livestream/sigma-media-server:3.0.12
+    command: >
+     /bin/bash -c '
+      env ;
+      if [ -f "/etc/sigma-machine/config/nats.yaml" ]; then
+          ./sigma-video -config "mode=live,port=9999,debug=1,yaml=/etc/sigma-machine/config/config.yaml"
+      else
+          ./sigma-video -config "mode=live,port=9999,debug=1,yaml=/etc/sigma-machine/config/config.yaml"&sleep 4;
+          /etc/sigma-machine/script/register.sh --server-name=only-dev-transcoder-03 --enable-origin=true --enable-ingest=true --server-token=m-SyPaQDxgMRQqYpfO2V7 --server-data-dir=/data/transcode  --api-endpoint=https://dev-streaming.gviet.vn:8783
+      fi'
+    volumes:
+      - config_cluster_3:/etc/sigma-machine/config
+      - /data/data-test:/data/data-test
+    # ports:
+    #   - 8093:8080
+    networks:
+      - fpt
+
+
+
+networks:
+  fpt:
+     external: true
+  # traefik-ingress:
+  #     external: true
+
+volumes:
+  config_cluster_1: 
+  config_cluster_2:
+  config_cluster_3:

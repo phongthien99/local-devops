@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+ 
+  live:
+      image: registry.gviet.vn:5000/sigma-livestream/sigma-media-server:97f814a7
+      privileged: true
+      environment:
+        - SIGMA_PUBLIC_API_BASE=https://dev-streaming.gviet.vn:8783
+        - SIGMA_PUBLIC_API_BASE_LOCAL=/
+        - SIGMA_PUBLIC_PORTAL_URL=https://dev-streaming.gviet.vn:8783/portal
+        - SIGMA_PUBLIC_REGISTER_MACHINE_PATH=/select-app/register-machine
+        - SIGMA_PUBLIC_APP_EDIT_PATH=/apps/[appId]/home
+        - SIGMA_MACHINE_API=http://localhost:9999
+        - CLOUD_PROVIDER=aws
+      volumes:
+    
+       - config-test:/etc/sigma-machine/config
+
+      network_mode: host
+ 
+  
+volumes:
+  config-test:

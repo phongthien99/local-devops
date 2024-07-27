@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  vod:
+      image: registry.gviet.vn:5000/sigma-livestream/sigma-media-server:4.0.0
+      
+      # environment:
+      #   - SIGMA_PUBLIC_API_BASE=https://api.sigma.video
+      #   - SIGMA_PUBLIC_API_BASE_LOCAL=/
+      #   - SIGMA_PUBLIC_PORTAL_URL=https://portal.sigma.video
+      #   - SIGMA_PUBLIC_REGISTER_MACHINE_PATH=/select-app/register-machine
+      #   - SIGMA_PUBLIC_APP_EDIT_PATH=/apps/[appId]/home
+      #   - SIGMA_MACHINE_API=http://127.0.0.1:9999
+      #   - SIGMA_REGISTRATION_URL=https://api.sigma.video/api/machine/expose/get-registration-config
+      ports:
+       - 8019:8019
+       - 9991:9999
+      volumes:
+       - config-ssai-04:/etc/sigma-machine/config
+      
+volumes:
+   config-ssai-04:

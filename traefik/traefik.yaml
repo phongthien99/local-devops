@@ -1,0 +1,20 @@
+api:
+  insecure: true
+
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+  file:
+    filename: /config/dynamic.yaml
+
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+    http:
+      tls: true
+  # Tạo entripoint cho RTMP
+  rtmps:
+    address: ":1935"
