@@ -5,11 +5,11 @@ services:
     ports:
       - 9091:8080
     environment:
-      - ENDPOINT=hcm03.vstorage.vngcloud.vn
-      - ACCESS_KEY_ID=942dd691ca4e45cc9a3ed887a3b19026
-      - SECRET_ACCESS_KEY=fef936b8df2d2ae6ed733c22e401631d
-      - REGION=HCM03
+      - ENDPOINT=
+      - ACCESS_KEY_ID=
+      - SECRET_ACCESS_KEY=
+      - REGION=
       - USE_SSL=true
-      - BUCKET=catchup
+      - BUCKET=
  
   
