@@ -1,0 +1,8 @@
+.:53 {
+    hosts {
+        127.0.0.1 *.example.local
+        fallthrough
+    }
+    forward . 8.8.8.8
+    log
+}

@@ -10,9 +10,9 @@ services:
       - 1935:1935
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "${HOST_VOLUME_PATH}/traefik/certs:/certs/"
-      - "${HOST_VOLUME_PATH}/traefik/traefik.yaml:/etc/traefik/traefik.yaml"
-      -  "${HOST_VOLUME_PATH}/traefik/dynamic.yaml:/config/dynamic.yaml"
+      - "${HOST_VOLUME_PATH:-.}/traefik/certs:/certs/"
+      - "${HOST_VOLUME_PATH:-.}/traefik/traefik.yaml:/etc/traefik/traefik.yaml"
+      - "${HOST_VOLUME_PATH:-.}/traefik/dynamic.yaml:/config/dynamic.yaml"
     labels:
       - traefik.enable=true
       - traefik.http.routers.traefik.entrypoints=web
@@ -22,4 +22,4 @@ services:
       - traefik-ingress
 networks:
   traefik-ingress:
-     external: true
+    external: true

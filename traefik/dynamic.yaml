@@ -1,6 +1,29 @@
-tls:
-  stores:
-    default:
-      defaultCertificate:
-        certFile: /certs/_wildcard.local.pem
-        keyFile: /certs/_wildcard.local.pem
+# tls:
+#   stores:
+#     default:
+#       defaultCertificate:
+#         certFile: /certs/_wildcard.local.pem
+#         keyFile: /certs/_wildcard.local.pem
+http:
+  serversTransports:
+    portainer-transport:
+      insecureSkipVerify: true 
+  routers:
+    portainer-dev-router:
+      rule: "Host(`portainer.lh`)"   # Replace with your domain or routing rule
+      service: portainer-dev
+      middlewares:
+        - portainerApiKeyHeaders
+  middlewares:
+    portainerApiKeyHeaders:
+      headers:
+        customRequestHeaders:
+          X-API-Key: ptr_LVR3kXfq/7LwvYPuZSwzpLiSlW5nf9V42XTxExnYnM4=
+
+  services:
+    portainer-dev:
+      loadBalancer:
+        servers:
+          - url: "https://123.30.172.11:1683"   # Replace with the target IP addres
+        serversTransport: portainer-transport
+  

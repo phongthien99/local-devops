@@ -18,3 +18,5 @@ entryPoints:
   # Tạo entripoint cho RTMP
   rtmps:
     address: ":1935"
+log:
+ level: DEBUG
