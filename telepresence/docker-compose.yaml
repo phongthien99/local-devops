@@ -1,0 +1,15 @@
+version: '3.8'
+
+services: 
+  telepresence-client:
+    image: phongthien/telepresence-client:2.17.0
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - "/dev/net/tun:/dev/net/tun"
+    network_mode: "host"
+    volumes:
+      - /home/phongthien/.kube/config:/root/.kube/config
+      # - /usr/local/bin/telepresence:/usr/local/bin/telepresence
+    stdin_open: true
+    tty: true
