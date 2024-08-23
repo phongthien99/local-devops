@@ -20,6 +20,7 @@ services:
       - traefik.docker.network=traefik-ingress
     networks:
       - traefik-ingress
+    restart: unless-stopped
 networks:
   traefik-ingress:
     external: true
